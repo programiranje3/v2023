@@ -32,7 +32,7 @@ sole input argument.
 Task 3
 
 Write a function that receives 2 input parameters: 
-1) an iterable (numbers), and 2) a non-negative integer (n).  
+1) an iterable (items), and 2) a non-negative integer (n).  
 The function returns the lowest n-th value of the iterable. 
 If n is non-positive or greater than the number of elements 
 in the iterable, the function returns the lowest value in the 
@@ -108,7 +108,7 @@ Additional instructions:
 method of class string to assure all letters are in lower case 
 - Except for the use of the 'lower' string method, solve this task 
 using list methods only 
-- The space character, if present, should be disregarded.     
+- The space characters, if present, should be discarded.     
 """
 
 
@@ -116,10 +116,13 @@ using list methods only
 # Test the function
 # print("anagram('School master', 'The classroom'):")
 # print(anagram('School master', 'The classroom'))
+# print()
 # print("anagram('Dormitory', 'Dirty room'):")
 # print(anagram('Dormitory', 'Dirty room'))
+# print()
 # print("anagram('Conversation', 'Voices rant on'):")
 # print(anagram('Conversation', 'Voices rant on'))
+# print()
 # print("anagram('Bob', 'Bill'):")
 # print(anagram('Bob', 'Bill'))
 
@@ -143,8 +146,10 @@ this task, as well
 # Test the function
 # print("palindrome('Madam'):")
 # print(palindrome("Madam"))
+# print()
 # print("palindrome('nurses run'):")
 # print(palindrome("nurses run"))
+# print()
 # print("palindrome('nurse run'):")
 # print(palindrome("nurse run"))
 
