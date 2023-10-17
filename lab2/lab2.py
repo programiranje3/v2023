@@ -86,7 +86,11 @@ def pangram(s):
     # return True
     #
     # Option 2
-    return all([letter in s.lower() for letter in ascii_lowercase])
+    # return all([letter in s.lower() for letter in ascii_lowercase])
+    #
+    # Option 3
+    letters_only = [ch for ch in set(s.lower()) if ch.isalpha()]
+    return "".join(sorted(letters_only)) == ascii_lowercase
 
 
 #%%
