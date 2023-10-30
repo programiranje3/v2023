@@ -73,8 +73,8 @@ TASK 3
 
 Write the 'process_product_orders' function that receives a list of product orders, 
 where each order is a 4-tuple of the form (order_id, product_name, quantity, price_per_item). 
-The function returns a list of 2-tuples of the form (order_id, total_price) where total price 
-for an order is the product of the quantity and the price per item.
+The function returns a dictionary with elements of the form <order_id: total_price>, 
+where total price for an order is the product of the quantity and the price per item.
 The function also receives two named arguments that may affect the computed total price:
 - 'discount' - the discount, expressed in percentages, to be applied to the total price;
   the default value of this argument is None
@@ -83,7 +83,7 @@ The function also receives two named arguments that may affect the computed tota
 
 Implement the function in three different ways:
 1) using for loop
-2) using list comprehension
+2) using dictionary comprehension
 3) using the map() f. together with an appropriate auxiliary function
 """
 
@@ -152,7 +152,7 @@ Write the 'mean_median_diff' function that generates n random numbers (integers)
 n and k are the function's input (positional) parameters. It does so in several iterations, the exact number of 
 iterations determined by the named input parameter 'iterations', with the default value of 10. 
 In each iteration, the function computes the difference between mean and median of the generated numbers and stores 
-it in a list. After completing all the iterations, the function prints the mean - median differences from all the 
+it in a list. After completing all the iterations, the function prints the mean-median differences from all the 
 iterations as well as the average difference.
   
 Decorate the function with the timer decorator.
