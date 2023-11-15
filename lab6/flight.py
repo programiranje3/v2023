@@ -35,11 +35,11 @@ Furthermore, the following new methods should be added:
   data provided as a dictionary (the only input argument) with the following keys: 
   fl_num, departure, origin, destination, operator. 
   Consider that the dictionary might not contain all the expected items, that is, some dictionary keys might 
-  not match the expected ones; in such a case, the method prints the keys that were expected but not available 
-  in the input dictionary and returns None 
+  not match the expected ones; in such a case, the method prints the keys that are available and creates a 
+  Flight instance with the available data 
   
-- a generator method that generates a sequence of passengers who have not yet checked in; at the end - after 
-  yielding all those who haven't checked in yet - the method prints the number of such passengers.
+- a generator method that generates a sequence of passengers who have not yet checked in; the method also prints 
+  the number of such passengers.
 
 - a generator method that generates a sequence of candidate passengers for an upgrade to the business class; 
   those are the passengers of the economy class whose airfare exceed the given threshold (input parameter) 
