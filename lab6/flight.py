@@ -100,7 +100,7 @@ class Flight:
             return
         if isinstance(value, str):
             import re
-            route_parts = re.split('[:->]', value) # alternative way for defining regular exapression: ':|-|>'
+            route_parts = re.split('[,->]', value) # alternative way for defining regular expression: ',|-|>'
             if len(route_parts) == 2:
                 self.__route = tuple(route_parts)
                 return
