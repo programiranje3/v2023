@@ -6,7 +6,7 @@ LAB 7
 
 #%%
 """
-TASK 1:
+TASK 1
 
 Write the *read_sort_write* function that reads in the content of the given text file,  
 sorts it, and writes the (sorted) content to new textual files. The function receives 
@@ -38,7 +38,7 @@ To test the function, use the 'data/file_names_sample.txt' file
 
 #%%
 """
-TASK: 2
+TASK 2
 
 The file 'cities_and_times.txt' contains city names and time data.
 More precisely, each line contains the name of a city, followed by
@@ -53,7 +53,6 @@ The function should also:
 - serialise (pickle) the list into a file ('task2_cities_and_times.pkl'), as a list object
 - write the list content into a csv file ('task2_cities_and_times.csv'), in the format:
    city; weekday; time
-  where time is represented in the format '%H:%M:%S'
 Include appropriate try except blocks to prevent the program from crushing
 in the case of a non existing file, or a problem while reading from / writing to 
 a file, or transforming data values.
@@ -87,7 +86,7 @@ to read in and print the content of the csv file
 
 #%%
 """
-TASK 3:
+TASK 3
 
 In the data folder, there is a text file ('image_files_for_training.txt') that lists 
 file paths for a bunch of images (one image file path per line). 
