@@ -3,8 +3,6 @@
 LAB 7
 """
 
-from io_util_start import *
-from datetime import time, datetime
 
 #%%
 """
@@ -27,32 +25,6 @@ existing input file, or any other problem occurring while reading from / writing
 To test the function, use the 'data/file_names_sample.txt' file
 """
 #%%
-
-def read_sort_write(fname):
-
-    def with_ext_sort_order(with_ext_fname):
-        name, ext = with_ext_fname.lower().rsplit('.', maxsplit=1)
-        return ext, name
-
-    fpath = get_data_dir() / fname
-
-    with_ext = []
-    no_ext = []
-    for line in read_from_txt_file(fpath):
-        if '.' in line:
-            with_ext.append(line)
-        else:
-            no_ext.append(line)
-
-    no_ext.sort(key=lambda line: line.lower())
-    with_ext.sort(key=with_ext_sort_order)
-
-    with_ext_fpath = get_results_dir() / 'task1_files_with_extension.txt'
-    write_to_txt_file(*with_ext, fpath=with_ext_fpath)
-
-    no_ext_fpath = get_results_dir() / 'task1_files_no_extension.txt'
-    write_to_txt_file(*no_ext, fpath=no_ext_fpath)
-
 
 
 
@@ -96,38 +68,16 @@ Bonus 2: when testing the function, use csv.DictReader
 to read in and print the content of the csv file
 """
 #%%
-def process_city_data(fpath):
-
-    cities_list = []
-    for line in read_from_txt_file(fpath):
-        city, wday, local_time = line.rsplit(maxsplit=2)
-        try:
-            local_time_dt = datetime.strptime(local_time, '%H:%M')
-        except ValueError:
-            stderr.write(f"cannot parse local time string ({local_time}); will skip it")
-        else:
-            cities_list.append((city, wday, local_time_dt.time()))
-
-    cities_list.sort(key=lambda city_data: city_data[2])
-
-    serialise_to_file(cities_list, get_results_dir() / 'task2_cities_and_times.pkl')
-
-
-
 
 
 
 #%%
 # Test the function
-process_city_data(get_data_dir() / "cities_and_times.txt")
+# process_city_data(get_data_dir() / "cities_and_times.txt")
 
 
 #%%
 # Restore and print the serialised data
-cities_and_times = unpickle_from_file(get_results_dir() / 'task2_cities_and_times.pkl')
-if cities_and_times:
-    for city_time in cities_and_times:
-        print(city_time)
 
 
 #%%
@@ -136,7 +86,7 @@ if cities_and_times:
 
 #%%
 """
-TASK 3
+TASK 3:
 
 In the data folder, there is a text file ('image_files_for_training.txt') that lists 
 file paths for a bunch of images (one image file path per line). 
@@ -157,7 +107,7 @@ and does the following:
 
 #%%
 # Test the function
-# process_image_files(util.get_data_dir() / "image_files_for_training.txt")
+# process_image_files(get_data_dir() / "image_files_for_training.txt")
 
 
 #%%
@@ -202,8 +152,8 @@ https://www.practicepython.org/exercise/2014/12/14/23-file-overlap.html
 
 #%%
 # Test the function
-# t4_f1 = util.get_data_dir() / "prime_numbers.txt"
-# t4_f2 = util.get_data_dir() / "happy_numbers.txt"
+# t4_f1 = get_data_dir() / "prime_numbers.txt"
+# t4_f2 = get_data_dir() / "happy_numbers.txt"
 # identify_shared_numbers(t4_f1, t4_f2)
 
 
