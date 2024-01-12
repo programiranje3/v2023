@@ -47,20 +47,20 @@ class Flight:
 
     @property
     def departure(self):
+        if not hasattr(self, '_Flight__departure'):
+            self.__departure = None
         return self.__departure
 
     @departure.setter
     def departure(self, value):
         if not isinstance(value, (date, datetime, str)):
             stderr.write(f"departure setter: expected datetime or str value, got {type(value)}: cannot proceed\n")
-            self.__departure = None
             return
         if isinstance(value, str):
             value = datetime.strptime(value, Flight.departure_format)
         if value > datetime.now():
             self.__departure = value
         else:
-            self.__departure = None
             stderr.write("departure setter: departure date must be some future date\n")
 
     def add_passenger(self, passenger):
@@ -89,11 +89,15 @@ class Flight:
 
     @staticmethod
     def get_date_and_time_str(dt_obj):
-        date_str = datetime.strftime(dt_obj, '%d/%m/%Y')
-        time_str = datetime.strftime(dt_obj, '%H:%M')
-        return date_str, time_str
+        if dt_obj:
+            date_str = datetime.strftime(dt_obj, '%d/%m/%Y')
+            time_str = datetime.strftime(dt_obj, '%H:%M')
+            return date_str, time_str
+        return 'unknow', 'unknown'
 
     def time_till_departure(self):
+        if not self.departure:
+            return None
         depart_delta = self.departure - datetime.now()
         depart_days = depart_delta.days
         depart_hours, the_rest = divmod(depart_delta.seconds, 3600)
@@ -117,8 +121,8 @@ class Flight:
 
 if __name__ == '__main__':
 
-    lh1411 = Flight('LF1411', '2023-12-05 6:50')
-    lh992 = Flight('LH992', '2023-11-25 12:20')
+    lh1411 = Flight('LF1411', '2024-12-05 6:50')
+    lh992 = Flight('LH992', '2024-11-25 12:20')
 
     print("\nFLIGHTS DATA:\n")
     print(lh1411)
@@ -144,8 +148,10 @@ if __name__ == '__main__':
 
     print()
 
-    days, hours, mins = lh1411.time_till_departure()
-    print(f"Time till departure of the flight {lh1411.flight_num}: {days} days, {hours} hours, and {mins} minutes")
+    time_to_depart = lh1411.time_till_departure()
+    if time_to_depart:
+        days, hours, mins = time_to_depart
+        print(f"Time till departure of the flight {lh1411.flight_num}: {days} days, {hours} hours, and {mins} minutes")
 
     print()
     print("\nPASSENGERS ON FLIGHT LH1411 (iter / next):")

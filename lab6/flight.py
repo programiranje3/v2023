@@ -19,6 +19,9 @@ The following methods of the Flight class need to be revised:
 
 - the set method for the *departure* attribute, so that it properly handles situations when departure date 
   and time are given as a string in an unknown format (that is, in the format other than the *departure_format*)
+  
+- the property (getter) method for the *departure* attribute is done more in the Pythonic style, known as 
+  "easier to ask for forgiveness than permission" or EAFP 
 
 - the method that returns a string representation of the given Flight object (__str__()) so that it describes 
   the flight with the extended set of attributes
@@ -38,8 +41,8 @@ Furthermore, the following new methods should be added:
   not match the expected ones; in such a case, the method prints the keys that are available and creates a 
   Flight instance with the available data 
   
-- a generator method that generates a sequence of passengers who have not yet checked in; the method also prints 
-  the number of such passengers.
+- a generator method that generates a sequence of passengers who have not yet checked in; the method should also 
+  print the number of such passengers.
 
 - a generator method that generates a sequence of candidate passengers for an upgrade to the business class; 
   those are the passengers of the economy class whose airfare exceed the given threshold (input parameter) 
@@ -68,7 +71,8 @@ class Flight:
 
     @classmethod
     def from_dict(cls, flight_dict):
-        def value_or_None(key):
+        # fl_num, departure, origin, destination, operator
+        def value_or_none(key):
             return flight_dict[key] if key in flight_dict.keys() else None
 
         try:
@@ -78,40 +82,46 @@ class Flight:
                        flight_dict['operator'])
         except KeyError as err:
             stderr.write(f"Could not create a complete flight object due to the missing flight data: {err}\n")
-            available_keys = {'fl_num','departure','origin','destination','operator'} & set(flight_dict.keys())
-            stderr.write(f"A Flight object will be created with the following data: {', '.join(available_keys)}\n")
-            return cls(value_or_None('fl_num'),
-                       value_or_None('departure'),
-                       (value_or_None('origin'), value_or_None('destination')),
-                       value_or_None('operator'))
-
+            available_keys = ({'fl_num', 'departure', 'origin', 'destination', 'operator'} &
+                              set(flight_dict.keys()))
+            stderr.write(f"Instead, a flight object will be created with the following data items: "
+                         f"{', '.join(available_keys)}\n")
+            return cls(value_or_none('fl_num'),
+                       value_or_none('departure'),
+                       (value_or_none('origin'), value_or_none('destination')),
+                       value_or_none('operator'))
 
     @property
     def departure(self):
-        return self.__departure
+        try:
+            return self.__departure
+        except AttributeError:
+            self.__departure = None
+            return self.__departure
 
     @departure.setter
     def departure(self, value):
         if not isinstance(value, (date, datetime, str)):
             stderr.write(f"departure setter: expected datetime or str value, got {type(value)}: cannot proceed\n")
-            self.__departure = None
             return
         if isinstance(value, str):
             try:
                 value = datetime.strptime(value, Flight.departure_format)
             except ValueError as err:
-                stderr.write(f"departure setter: could not parse the departure from string {value}:\n{err}\n")
-                self.__departure = None
+                stderr.write(f"An error occurred while parsing the departure date and time:\n{err}\n")
                 return
         if value > datetime.now():
             self.__departure = value
         else:
-            self.__departure = None
             stderr.write("departure setter: departure date must be some future date\n")
 
     @property
     def route(self):
-        return self.__route
+        try:
+            return self.__route
+        except AttributeError:
+            self.__route = None
+            return self.__route
 
     @route.setter
     def route(self, value):
@@ -120,12 +130,11 @@ class Flight:
             return
         if isinstance(value, str):
             import re
-            route_parts = re.split('[,->]', value) # alternative way for defining regular expression: ',|-|>'
+            route_parts = re.split('[:->]', value) # alternative way for defining regular exapression: ':|-|>'
             if len(route_parts) == 2:
                 self.__route = tuple(route_parts)
                 return
-        self.__route = None
-        stderr.write(f"route setter: wrong input ({value}) for the flight route\n")
+        stderr.write("Error when setting route value\n")
 
 
     # Note that the following method has been modified as follows:
@@ -189,7 +198,7 @@ class Flight:
         self.__iter_counter += 1
         return next_passenger
 
-    def not_checked_in_generator(self):
+    def not_checkedin_generator(self):
         # Option 1
         # not_checked_in_count = 0
         # for p in self.passengers:
@@ -214,7 +223,6 @@ class Flight:
         #     yield c
         # Option 2
         return (c for c in sorted(candidates, key=lambda passenger: passenger.airfare, reverse=True))
-
 
 
 #%%
@@ -250,31 +258,36 @@ if __name__ == '__main__':
     for p, fare in zip(passengers, airfares):
         lh992.add_passenger(p, fare)
 
-    # print(f"\nAfter adding passengers to flight {lh992.flight_num}:\n")
-    # print(lh992)
-    # print()
-    #
-    print("\nLast call to passengers who have not yet checked in!")
-    # for passenger in lh992.not_checked_in_generator():
-    #     print(passenger)
-    g = lh992.not_checked_in_generator()
-    while True:
-        try:
-            print(next(g))
-        except StopIteration:
-            print("------- end of not-checked-in passengers list --------")
-            break
+    print(f"\nAfter adding passengers to flight {lh992.flight_num}:\n")
+    print(lh992)
+    print()
 
-    # # check in some economy class passengers to be able to test the next method
-    # dona.checked_in = True
-    # bill.checked_in = True
+    print("Last call to passengers who have not yet checked in!")
+    # Option 1 (typically used one)
+    for passenger in lh992.not_checkedin_generator():
+        print(passenger)
+
+    # # Option 2 (not ofter used, but illustrates how generators work)
+    # g = lh992.not_checkedin_generator()
+    # while True:
+    #     try:
+    #         print(next(g))
+    #     except StopIteration:
+    #         print("------- end of not-checked-in passengers list --------")
+    #         break
     #
+    # check in some economy class passengers to be able to test the next method
+    dona.checked_in = True
+    bill.checked_in = True
+
     # print()
     # print("Passengers offered an upgrade opportunity:")
+    # # Option 1
     # for ind, passenger in enumerate(lh992.candidates_for_upgrade_generator(500)):
     #     print(f"{ind+1}. {passenger}")
-    #
+
     # print()
+    # # Option 2
     # print("Candidates for upgrade to business class:")
     # g = lh992.candidates_for_upgrade_generator(500)
     # i = 1

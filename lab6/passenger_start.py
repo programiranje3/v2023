@@ -21,6 +21,9 @@ The following methods of the Passenger class need to be revised:
   the argument for *airfare* is None by default. The *services* attribute should be initialised 
   to an empty list.
 
+- the property (getter) method for the *passport* attribute is done more in the Pythonic style, known as 
+  "easier to ask for forgiveness than permission" or EAFP 
+
 - a method that returns a string representation of a given Passenger object (__str__()) so that it describes 
   the passenger with the extended set of attributes.
 

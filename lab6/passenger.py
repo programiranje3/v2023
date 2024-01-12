@@ -21,6 +21,9 @@ The following methods of the Passenger class need to be revised:
   the argument for *airfare* is None by default. The *services* attribute should be initialised 
   to an empty list.
 
+- the property (getter) method for the *passport* attribute is done more in the Pythonic style, known as 
+  "easier to ask for forgiveness than permission" or EAFP 
+
 - a method that returns a string representation of a given Passenger object (__str__()) so that it describes 
   the passenger with the extended set of attributes.
 
@@ -40,7 +43,7 @@ Finally, the following new methods should be added:
 
 from datetime import datetime, timedelta
 from sys import stderr
-from flight_enums import FlightService
+from lab6.flight_enums import FlightService
 
 class Passenger:
 
@@ -55,7 +58,11 @@ class Passenger:
 
     @property
     def passport(self):
-        return self.__passport
+        try:
+            return self.__passport
+        except AttributeError:
+            self.__passport = None
+            return self.__passport
 
     @passport.setter
     def passport(self, value):
@@ -66,30 +73,30 @@ class Passenger:
             self.__passport = str(value)
             return
         print(f"Invalid passport number ({value})")
-        self.__passport = None
 
     @property
     def airfare(self):
-        return self.__airfare
+        try:
+            return self.__airfare
+        except AttributeError:
+            self.__airfare = None
+            return self.__airfare
 
     @airfare.setter
     def airfare(self, value):
         if not isinstance(value, (float, int, str)):
             stderr.write(f"Error! A value of inadequate type {type(value)} passed to the airfare setter.\n")
-            self.__airfare = None
             return
         if isinstance(value, (int, str)):
             try:
                 value = float(value)
             except ValueError as err:
                 stderr.write(f"An error occurred while transforming airfare value into float:\n{err}\n")
-                self.__airfare = None
                 return
         if value > 0:
             self.__airfare = value
         else:
             stderr.write(f"Error! Incorrect value {value} passed to the airfare setter\n")
-            self.__airfare = None
 
     @property
     def checked_in(self):

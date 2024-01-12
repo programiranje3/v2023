@@ -19,6 +19,9 @@ The following methods of the Flight class need to be revised:
 
 - the set method for the *departure* attribute, so that it properly handles situations when departure date 
   and time are given as a string in an unknown format (that is, in the format other than the *departure_format*)
+  
+- the property (getter) method for the *departure* attribute is done more in the Pythonic style, known as 
+  "easier to ask for forgiveness than permission" or EAFP 
 
 - the method that returns a string representation of the given Flight object (__str__()) so that it describes 
   the flight with the extended set of attributes
@@ -52,7 +55,7 @@ Furthermore, the following new methods should be added:
 
 from datetime import datetime, date
 from sys import stderr
-from lab6.passenger_proba import Passenger
+from lab6.passenger import Passenger
 
 
 class Flight:

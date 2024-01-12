@@ -53,6 +53,8 @@ class Passenger:
 
     @property
     def passport(self):
+        if not hasattr(self, '_Passenger__passport'):
+            self.__passport = None
         return self.__passport
 
     @passport.setter
@@ -64,7 +66,6 @@ class Passenger:
             self.__passport = str(value)
             return
         stderr.write(f"Error occurred when trying to set passport value: wrong input ({value})\n")
-        self.__passport = None
 
 
     def __str__(self):
