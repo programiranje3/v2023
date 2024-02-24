@@ -90,10 +90,10 @@ def list_stats(numbers):
     sum_non_neg = 0
     prod_neg = 1
     for num in numbers:
-        if abs(num) < min_abs:
-            min_abs = abs(num)
-        elif abs(num) > max_abs:
-            max_abs = abs(num)
+        if abs(num) < abs(min_abs):
+            min_abs = num
+        elif abs(num) > abs(max_abs):
+            max_abs = num
         if num >= 0:
             sum_non_neg += num
         else:
@@ -104,7 +104,7 @@ def list_stats(numbers):
 
 #%%
 # Test the function
-print(list_stats([3.4, 5.6, -4.2, -5.6, 9, 1.2, 11.3, -23.45, 81]))
+print(list_stats([3.4, 5.6, -4.2, -5.6, 9, 1.2, 11.3, -23.45, -81]))
 
 #%%
 """
